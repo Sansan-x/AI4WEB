@@ -1,0 +1,24 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "gaps.schema.json",
+  "title": "CoverageGaps",
+  "type": "object",
+  "required": ["gaps"],
+  "properties": {
+    "gaps": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["gapType"],
+        "properties": {
+          "riskId": { "type": "string" },
+          "service": { "type": "string" },
+          "category": { "type": "string" },
+          "gapType": { "type": "string" },
+          "caseId": { "type": "string" },
+          "suggestion": { "type": "string" }
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,59 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "service-risk-profile.schema.json",
+  "title": "ServiceRiskProfile",
+  "type": "object",
+  "required": [
+    "service",
+    "applicableBaselines",
+    "excludedBaselines",
+    "riskPointIds",
+    "overallExposure",
+    "readyForSubmission"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "service": { "type": "string" },
+    "applicableBaselines": {
+      "type": "array",
+      "items": { "type": "string" }
+    },
+    "excludedBaselines": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["baselineId", "reason"],
+        "properties": {
+          "baselineId": { "type": "string" },
+          "domain": { "type": "string" },
+          "reason": { "type": "string" }
+        }
+      }
+    },
+    "riskPointIds": {
+      "type": "array",
+      "items": { "type": "string" }
+    },
+    "riskPoints": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["riskId", "service", "category", "severity", "status"],
+        "properties": {
+          "riskId": { "type": "string" },
+          "service": { "type": "string" },
+          "category": { "type": "string" },
+          "severity": { "type": "string", "enum": ["P0", "P1", "P2", "P3"] },
+          "status": { "type": "string", "enum": ["Open", "Mitigated", "Accepted"] },
+          "codeEvidence": { "type": "array", "items": { "type": "string" }, "maxItems": 3 },
+          "serviceLevelSummary": { "type": "string" }
+        }
+      }
+    },
+    "overallExposure": {
+      "type": "string",
+      "enum": ["low", "medium", "high", "critical"]
+    },
+    "readyForSubmission": { "type": "boolean" }
+  }
+}

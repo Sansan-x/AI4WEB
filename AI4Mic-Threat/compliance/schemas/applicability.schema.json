@@ -1,0 +1,40 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "applicability.schema.json",
+  "title": "BaselineApplicability",
+  "type": "object",
+  "required": ["service", "applicableBaselines", "excludedBaselines"],
+  "additionalProperties": false,
+  "properties": {
+    "service": { "type": "string" },
+    "applicableBaselines": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["baselineId", "domain", "coverageScope", "applicable"],
+        "properties": {
+          "baselineId": { "type": "string" },
+          "domain": { "type": "string" },
+          "coverageScope": {
+            "type": "string",
+            "enum": ["productOnly", "serviceInferred", "serviceVerified"]
+          },
+          "applicable": { "type": "boolean" },
+          "reason": { "type": "string" }
+        }
+      }
+    },
+    "excludedBaselines": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["baselineId", "reason"],
+        "properties": {
+          "baselineId": { "type": "string" },
+          "domain": { "type": "string" },
+          "reason": { "type": "string" }
+        }
+      }
+    }
+  }
+}

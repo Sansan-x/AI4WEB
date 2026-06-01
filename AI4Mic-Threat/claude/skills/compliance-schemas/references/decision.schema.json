@@ -1,0 +1,18 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "decision.schema.json",
+  "title": "ComplianceDecision",
+  "type": "object",
+  "required": ["decision", "reasons"],
+  "properties": {
+    "decision": {
+      "type": "string",
+      "enum": ["Pass", "ConditionalPass", "Block"]
+    },
+    "reasons": {
+      "type": "array",
+      "items": { "type": "string" }
+    },
+    "policyVersion": { "type": "string" }
+  }
+}

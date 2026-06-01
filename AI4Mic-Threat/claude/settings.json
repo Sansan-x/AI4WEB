@@ -1,0 +1,30 @@
+{
+  "permissions": {
+    "deny": [
+      "Write(compliance/fixtures/**)",
+      "Write(compliance/schemas/**)",
+      "Write(compliance/taxonomy/**)",
+      "Edit(compliance/fixtures/**)",
+      "Edit(compliance/schemas/**)",
+      "Edit(compliance/taxonomy/**)"
+    ],
+    "allow": [
+      "Write(.claude/runs/**)",
+      "Write(compliance/examples/**)"
+    ]
+  },
+  "hooks": {
+    "PostToolUse": [
+      {
+        "matcher": "Write",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "\"$CLAUDE_PROJECT_DIR\"/.claude/hooks/validate-run-artifact.sh",
+            "timeout": 30
+          }
+        ]
+      }
+    ]
+  }
+}

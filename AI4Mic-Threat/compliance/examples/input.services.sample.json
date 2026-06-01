@@ -1,0 +1,11 @@
+{
+  "repoPath": "compliance/fixtures/demo-service",
+  "services": [
+    {
+      "serviceName": "order-service",
+      "sourcePaths": ["src/main/java"]
+    }
+  ],
+  "middlewareCasesPath": "compliance/examples/middleware_cases.sample.json",
+  "waiversPath": null
+}

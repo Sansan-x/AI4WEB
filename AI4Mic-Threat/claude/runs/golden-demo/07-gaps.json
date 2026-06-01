@@ -1,0 +1,12 @@
+{
+  "gaps": [
+    {
+      "riskId": "R-SQL-001",
+      "service": "order-service",
+      "category": "SQLI",
+      "gapType": "CaseFailed",
+      "caseId": "CASE-SQL-001",
+      "suggestion": "Remediate SQL injection pattern and re-run middleware case"
+    }
+  ]
+}

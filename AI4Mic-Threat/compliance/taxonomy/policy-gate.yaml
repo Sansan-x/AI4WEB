@@ -1,0 +1,34 @@
+version: "1.0.0"
+defaultDecision: Pass
+
+keyBaselines: [SQLI, CMDI, FILE]
+
+rules:
+  - id: block-new-high-risk-no-coverage
+    description: Open P0/P1 without effective coverage must block.
+    when:
+      riskSeverityIn: [P0, P1]
+      riskStatusIn: [Open]
+      coverageStateIn: [Gap, Partial]
+    decision: Block
+    reason: high_risk_not_closed_or_not_covered
+
+  - id: block-key-baseline-failed
+    description: Core baseline middleware failures block release.
+    when:
+      keyBaselineIn: [SQLI, CMDI, FILE]
+      middlewareResultIn: [FAIL, ERROR]
+    decision: Block
+    reason: key_baseline_failed
+
+  - id: conditional-pass-with-waiver
+    description: Allow conditional pass with valid waiver.
+    when:
+      hasValidWaiver: true
+    decision: ConditionalPass
+    reason: valid_timeboxed_waiver
+
+waiver:
+  requiredFields: [riskId, owner, reason, expiresAt, mitigationPlan]
+  expirationPolicy:
+    denyExpired: true

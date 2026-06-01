@@ -1,0 +1,40 @@
+version: "1.0.0"
+description: Security baseline checklist for microservice threat mapping. Extend with your org checklist.
+
+baselines:
+  - baselineId: sql-injection-baseline
+    title: SQL Injection Prevention
+    domain: SQLI
+    coverageScope: serviceVerified
+    applicabilityHints:
+      requiresDataStore: true
+  - baselineId: command-injection-baseline
+    title: Command Injection Prevention
+    domain: CMDI
+    coverageScope: serviceVerified
+    applicabilityHints:
+      requiresCommandExecution: true
+  - baselineId: file-operation-baseline
+    title: Secure File Operations
+    domain: FILE
+    coverageScope: serviceVerified
+    applicabilityHints:
+      requiresFileIO: true
+  - baselineId: auth-baseline
+    title: Authentication and Authorization
+    domain: AUTH
+    coverageScope: serviceInferred
+    applicabilityHints:
+      requiresHttpEntry: true
+  - baselineId: secrets-baseline
+    title: Sensitive Data Protection
+    domain: SECRETS
+    coverageScope: productOnly
+    applicabilityHints:
+      alwaysApplicable: true
+  - baselineId: dependency-baseline
+    title: Component and Supply Chain Security
+    domain: DEPENDENCY
+    coverageScope: productOnly
+    applicabilityHints:
+      alwaysApplicable: true
