@@ -20,7 +20,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "\"$CLAUDE_PROJECT_DIR\"/.claude/hooks/validate-run-artifact.sh",
+            "command": "PROJECT_ROOT=\"${CLAUDE_PROJECT_DIR:-${OPENCODE_PROJECT_DIR:-$(pwd)}}\" && \"$PROJECT_ROOT/.claude/hooks/validate-run-artifact.sh\"",
             "timeout": 30
           }
         ]

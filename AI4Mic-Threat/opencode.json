@@ -1,0 +1,46 @@
+{
+  "$schema": "https://opencode.ai/config.json",
+  "default_agent": "compliance-coordinator",
+  "model": "{env:OPENCODE_MODEL}",
+  "small_model": "{env:OPENCODE_SMALL_MODEL}",
+  "instructions": ["AGENTS.md", ".claude/CLAUDE.md"],
+  "plugin": ["opencode-claude-hooks"],
+  "permission": {
+    "edit": {
+      "*": "ask",
+      ".claude/runs/**": "allow",
+      "compliance/examples/**": "allow",
+      "compliance/fixtures/**": "deny",
+      "compliance/schemas/**": "deny",
+      "compliance/taxonomy/**": "deny"
+    },
+    "bash": "allow",
+    "skill": {
+      "*": "allow"
+    }
+  },
+  "agent": {
+    "compliance-coordinator": {
+      "mode": "primary",
+      "description": "Orchestrates Java microservice 送检即合规 threat analysis end-to-end",
+      "permission": {
+        "task": {
+          "*": "deny",
+          "service-context": "allow",
+          "baseline-applicability": "allow",
+          "exposure-signal": "allow",
+          "dataflow-signal": "allow",
+          "controlplane-signal": "allow",
+          "risk-synthesizer": "allow",
+          "case-mapping": "allow",
+          "coverage-gap": "allow",
+          "policy-decision": "allow",
+          "evidence-pack": "allow"
+        },
+        "skill": {
+          "*": "allow"
+        }
+      }
+    }
+  }
+}

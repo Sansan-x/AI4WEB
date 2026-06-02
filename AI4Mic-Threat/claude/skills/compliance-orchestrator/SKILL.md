@@ -49,11 +49,23 @@ python3 compliance/scripts/validate_artifact.py \
 
 Schema keys: `service-slices`, `service-context`, `applicability`, `threat-signal`, `service-risk-profile`, `risk-points`, `risk-case-mapping`, `gaps`, `decision`, `evidence-package`.
 
-On validation failure: write `08-decision.json` with `{"decision":"Block","reasons":["pipelineDegraded"]}` and **stop** spawning further subagents.
+On validation failure: write `08-decision.json` with `{"decision":"Block","reasons":["pipelineDegraded"]}` and **stop** delegating to further subagents.
+
+## Delegation (Claude Code vs OpenCode)
+
+**Claude Code** — use the **Agent** tool with worker agent names (`service-context`, `baseline-applicability`, etc.). Parallel signal phases may use `background: true`.
+
+**OpenCode** — use the **task** tool with `subagent_type` set to the worker name (no `@` prefix). Example:
+
+```text
+task({ subagent_type: "service-context", prompt: "runId=... serviceName=... output=.claude/runs/.../01-context/....json" })
+```
+
+For parallel signals, issue multiple task calls for `exposure-signal`, `dataflow-signal`, and `controlplane-signal`.
 
 ## Delegation prompt template
 
-When spawning a worker, always include:
+When delegating to a worker, always include:
 
 - `runId`, `serviceName`, `repoPath` (from manifest)
 - exact **output file path**

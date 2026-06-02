@@ -1,7 +1,7 @@
 {
   "version": "1.0.0",
   "releaseId": "golden-demo",
-  "generatedAt": "2026-06-01T03:53:05.051211+00:00",
+  "generatedAt": "2026-06-02T03:53:11.828621+00:00",
   "policyVersion": "1.0.0",
   "taxonomyVersion": "1.0.0",
   "decision": {
@@ -106,7 +106,7 @@
       "runId": "golden-demo",
       "agentType": "init",
       "inputHash": "golden",
-      "outputHash": "2eaa237709c6f9b3cb05b0e437da23f9fda3aa54c9e700dc91cbbca77343b505",
+      "outputHash": "aa6a3a06a8d5d113f35a7c2b834a0181f3f22caf0fa7b757c1aab45bed9a91c9",
       "artifactPath": ".claude/runs/golden-demo/manifest.json",
       "latencyMs": 0,
       "retryCount": 0
