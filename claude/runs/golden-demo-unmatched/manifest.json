@@ -1,0 +1,12 @@
+{
+  "runId": "golden-demo-unmatched",
+  "createdAt": "2026-06-04T03:42:33.818843+00:00",
+  "repoPath": "compliance/fixtures/demo-service",
+  "services": [
+    "order-service"
+  ],
+  "middlewareCasesPath": "compliance/examples/middleware_cases.unmatched.json",
+  "status": "initialized",
+  "taxonomyVersion": "1.0.0",
+  "policyVersion": "1.0.0"
+}

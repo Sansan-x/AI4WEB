@@ -1,0 +1,25 @@
+{
+  "mappings": [
+    {
+      "riskId": "R-SQL-001",
+      "caseId": "CASE-SQL-001",
+      "coverageState": "Covered",
+      "coverageScope": "serviceVerified",
+      "confidence": 0.9,
+      "explanation": "SQLI domain matched; service case FAIL noted for audit [domain_matched] [partial:case_failed]"
+    },
+    {
+      "riskId": "R-AUTH-001",
+      "caseId": "CASE-AUTH-001",
+      "coverageState": "Covered",
+      "coverageScope": "serviceInferred",
+      "confidence": 0.85,
+      "explanation": "AUTH domain matched via wildcard middleware case [domain_matched]"
+    }
+  ],
+  "mappingExplanation": [
+    "Lenient phase: SQLI domain matched despite service-level FAIL",
+    "Wildcard middleware cases used as fallback coverage for AUTH on order-service",
+    "CMDI and FILE baselines excluded for order-service"
+  ]
+}

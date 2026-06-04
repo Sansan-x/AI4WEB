@@ -1,0 +1,7 @@
+{
+  "decision": "ConditionalPass",
+  "reasons": [
+    "domain_matched_lenient_phase"
+  ],
+  "policyVersion": "1.2.0"
+}

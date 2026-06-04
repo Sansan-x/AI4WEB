@@ -1,0 +1,14 @@
+{
+  "service": "order-service",
+  "role": "REST API with MySQL persistence",
+  "entryPoints": [
+    "REST /api/orders/{id}"
+  ],
+  "dataStores": [
+    "MySQL via Spring datasource"
+  ],
+  "externalCalls": [],
+  "sensitiveAssets": [
+    "order records"
+  ]
+}

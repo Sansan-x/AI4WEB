@@ -1,0 +1,16 @@
+{
+  "service": "order-service",
+  "signalType": "exposure",
+  "signals": [
+    {
+      "signalId": "S-EXP-001",
+      "domain": "AUTH",
+      "strength": "likely",
+      "serviceLevelSummary": "REST order API lacks visible authentication controls on controller",
+      "anchors": [
+        "OrderController.java:17"
+      ],
+      "confidence": 0.7
+    }
+  ]
+}

@@ -1,0 +1,51 @@
+{
+  "service": "order-service",
+  "applicableBaselines": [
+    "sql-injection-baseline",
+    "auth-baseline",
+    "secrets-baseline",
+    "dependency-baseline"
+  ],
+  "excludedBaselines": [
+    {
+      "baselineId": "command-injection-baseline",
+      "domain": "CMDI",
+      "reason": "No Runtime.exec or ProcessBuilder usage detected"
+    },
+    {
+      "baselineId": "file-operation-baseline",
+      "domain": "FILE",
+      "reason": "No file upload/download APIs detected"
+    }
+  ],
+  "riskPointIds": [
+    "R-SQL-001",
+    "R-AUTH-001"
+  ],
+  "riskPoints": [
+    {
+      "riskId": "R-SQL-001",
+      "service": "order-service",
+      "category": "SQLI",
+      "severity": "P1",
+      "status": "Open",
+      "codeEvidence": [
+        "OrderDao.java:8"
+      ],
+      "serviceLevelSummary": "Dynamic SQL concatenation in order lookup"
+    },
+    {
+      "riskId": "R-AUTH-001",
+      "service": "order-service",
+      "category": "AUTH",
+      "severity": "P1",
+      "status": "Open",
+      "codeEvidence": [
+        "OrderController.java:17"
+      ],
+      "serviceLevelSummary": "Order API may lack authentication enforcement"
+    }
+  ],
+  "overallExposure": "high",
+  "readyForSubmission": false
+}

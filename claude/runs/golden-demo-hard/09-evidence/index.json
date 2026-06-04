@@ -1,0 +1,177 @@
+{
+  "version": "1.0.0",
+  "releaseId": "golden-demo-hard",
+  "generatedAt": "2026-06-04T03:42:32.957863+00:00",
+  "policyVersion": "1.2.0",
+  "taxonomyVersion": "1.0.0",
+  "decision": {
+    "decision": "ConditionalPass",
+    "reasons": [
+      "domain_matched_lenient_phase"
+    ],
+    "policyVersion": "1.2.0"
+  },
+  "riskPoints": [
+    {
+      "riskId": "R-SQL-001",
+      "service": "order-service",
+      "category": "SQLI",
+      "severity": "P1",
+      "status": "Open",
+      "codeEvidence": [
+        "OrderDao.java:8"
+      ],
+      "serviceLevelSummary": "Dynamic SQL concatenation in order lookup"
+    },
+    {
+      "riskId": "R-AUTH-001",
+      "service": "order-service",
+      "category": "AUTH",
+      "severity": "P1",
+      "status": "Open",
+      "codeEvidence": [
+        "OrderController.java:17"
+      ],
+      "serviceLevelSummary": "Order API may lack authentication enforcement"
+    }
+  ],
+  "middlewareCases": [
+    {
+      "caseId": "CASE-SQL-001",
+      "baselineType": "sql-injection-baseline",
+      "result": "FAIL",
+      "targetService": "order-service",
+      "execTime": "2026-05-29T10:00:00Z"
+    },
+    {
+      "caseId": "CASE-SQL-ALL-001",
+      "baselineType": "sql-injection-baseline",
+      "result": "PASS",
+      "targetService": "*",
+      "execTime": "2026-05-29T10:00:00Z"
+    },
+    {
+      "caseId": "CASE-CMD-001",
+      "baselineType": "command-injection-baseline",
+      "result": "SKIP",
+      "targetService": "*",
+      "execTime": "2026-05-29T10:00:00Z"
+    },
+    {
+      "caseId": "CASE-FILE-001",
+      "baselineType": "file-operation-baseline",
+      "result": "PASS",
+      "targetService": "*",
+      "execTime": "2026-05-29T10:00:00Z"
+    },
+    {
+      "caseId": "CASE-AUTH-001",
+      "baselineType": "auth-baseline",
+      "result": "PASS",
+      "targetService": "*",
+      "execTime": "2026-05-29T10:00:00Z"
+    }
+  ],
+  "mappings": [
+    {
+      "riskId": "R-SQL-001",
+      "caseId": "CASE-SQL-001",
+      "coverageState": "Covered",
+      "coverageScope": "serviceVerified",
+      "confidence": 0.9,
+      "explanation": "SQLI domain matched; service case FAIL noted for audit [domain_matched] [partial:case_failed]"
+    },
+    {
+      "riskId": "R-AUTH-001",
+      "caseId": "CASE-AUTH-001",
+      "coverageState": "Covered",
+      "coverageScope": "serviceInferred",
+      "confidence": 0.85,
+      "explanation": "AUTH domain matched via wildcard middleware case [domain_matched]"
+    }
+  ],
+  "gaps": [
+    {
+      "riskId": "R-SQL-001",
+      "service": "order-service",
+      "category": "SQLI",
+      "gapType": "CaseFailed",
+      "caseId": "CASE-SQL-001",
+      "suggestion": "Remediate SQL injection pattern and re-run middleware case"
+    }
+  ],
+  "agentRunTrace": [
+    {
+      "runId": "golden-demo-hard",
+      "agentType": "init",
+      "inputHash": "golden",
+      "outputHash": "800f91cfa92a2953977eedd68dc53eb2ac860772333c0784e35d0665434c8a6d",
+      "artifactPath": ".claude/runs/golden-demo-hard/manifest.json",
+      "latencyMs": 0,
+      "retryCount": 0
+    },
+    {
+      "runId": "golden-demo-hard",
+      "agentType": "slices",
+      "inputHash": "golden",
+      "outputHash": "02aba936bd7446c4d76730b8511d3ea7379ad2bddc58c1f17b1c832eb9eff74a",
+      "artifactPath": ".claude/runs/golden-demo-hard/00-service-slices.json",
+      "latencyMs": 0,
+      "retryCount": 0
+    },
+    {
+      "runId": "golden-demo-hard",
+      "agentType": "context",
+      "inputHash": "golden",
+      "outputHash": "d81b3015eba75363f61f847a9f62bd1544dda11da6b8fa8f63eee1c76f36fe7a",
+      "artifactPath": ".claude/runs/golden-demo-hard/01-context/order-service.json",
+      "latencyMs": 0,
+      "retryCount": 0
+    },
+    {
+      "runId": "golden-demo-hard",
+      "agentType": "applicability",
+      "inputHash": "golden",
+      "outputHash": "951d2e7f475f9c268e1a0c73f93a2dd31da5314fbb2d8b2c3cbbdaa7ff31ddcd",
+      "artifactPath": ".claude/runs/golden-demo-hard/02-applicability/order-service.json",
+      "latencyMs": 0,
+      "retryCount": 0
+    },
+    {
+      "runId": "golden-demo-hard",
+      "agentType": "signals",
+      "inputHash": "golden",
+      "outputHash": "72200642413f306fbb4e5c34de03594e86921d3db9f6b80f18ee9688015c93d9",
+      "artifactPath": ".claude/runs/golden-demo-hard/03-signals/order-service/dataflow.json",
+      "latencyMs": 0,
+      "retryCount": 0
+    },
+    {
+      "runId": "golden-demo-hard",
+      "agentType": "profile",
+      "inputHash": "golden",
+      "outputHash": "75ae424a8508afc929b761c6187b60dd316a668d78213c305745086389974129",
+      "artifactPath": ".claude/runs/golden-demo-hard/04-profiles/order-service.json",
+      "latencyMs": 0,
+      "retryCount": 0
+    },
+    {
+      "runId": "golden-demo-hard",
+      "agentType": "mappings",
+      "inputHash": "golden",
+      "outputHash": "79d19d3ac95556a313887835d4fc3e02e55d7fa2e8fb8f320b328523d0552d34",
+      "artifactPath": ".claude/runs/golden-demo-hard/06-mappings.json",
+      "latencyMs": 0,
+      "retryCount": 0
+    },
+    {
+      "runId": "golden-demo-hard",
+      "agentType": "decision",
+      "inputHash": "golden",
+      "outputHash": "a74d62107c7f869df4d3f0ab74495e4064656b367d9dda3c867bd4c15dec8f5e",
+      "artifactPath": ".claude/runs/golden-demo-hard/08-decision.json",
+      "latencyMs": 0,
+      "retryCount": 0
+    }
+  ]
+}
