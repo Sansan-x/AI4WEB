@@ -1,0 +1,75 @@
+version: "1.2.0"
+policyMode: lenient
+defaultDecision: Pass
+submissionCompliant: [Pass, ConditionalPass]
+
+keyBaselines: [SQLI, CMDI, FILE]
+hardGapTypes: [NoCaseMatched, CaseFailed, CaseNotEffective]
+informationalGapTypes: [CaseFailed, CaseNotEffective]
+softPartialTags: [depth_insufficient, cross_service_missing]
+
+rules:
+  - id: block-domain-unmatched-only
+    description: Lenient phase blocks only when an applicable open risk has no middleware case in the same domain.
+    when:
+      policyMode: lenient
+      riskStatusIn: [Open]
+      domainMatched: false
+    decision: Block
+    reason: risk_domain_without_matching_case
+
+  - id: conditional-pass-domain-matched
+    description: Lenient phase treats domain-matched open risks as submission-compliant (ConditionalPass).
+    when:
+      policyMode: lenient
+      riskStatusIn: [Open]
+      domainMatched: true
+    decision: ConditionalPass
+    reason: domain_matched_lenient_phase
+
+strictRules:
+  - id: block-new-high-risk-gap-or-hard-partial
+    description: Strict phase blocks open P0/P1 with Gap coverage.
+    when:
+      policyMode: strict
+      riskSeverityIn: [P0, P1]
+      riskStatusIn: [Open]
+      coverageStateIn: [Gap]
+    decision: Block
+    reason: high_risk_gap_or_hard_partial
+
+  - id: block-key-baseline-failed-service-domain-related
+    description: Strict phase blocks key baseline FAIL/ERROR when related open risk exists.
+    when:
+      policyMode: strict
+      keyBaselineIn: [SQLI, CMDI, FILE]
+      middlewareResultIn: [FAIL, ERROR]
+      requireRelatedOpenRisk: true
+    decision: Block
+    reason: key_baseline_failed_related_open_risk
+
+  - id: conditional-pass-soft-partial
+    description: Strict phase allows conditional pass for soft partial coverage only.
+    when:
+      policyMode: strict
+      riskSeverityIn: [P0, P1]
+      riskStatusIn: [Open]
+      coverageStateIn: [Partial]
+      partialKindIn: [Soft]
+    decision: ConditionalPass
+    reason: soft_partial_requires_timeboxed_remediation
+
+  - id: conditional-pass-with-waiver
+    description: Strict phase allows conditional pass with valid waiver.
+    when:
+      policyMode: strict
+      hasValidWaiver: true
+    decision: ConditionalPass
+    reason: valid_timeboxed_waiver
+
+waiver:
+  requiredForConditionalPass: false
+  requiredFields: [riskId, owner, reason, expiresAt, mitigationPlan]
+  maxValidityDays: 30
+  expirationPolicy:
+    denyExpired: true
