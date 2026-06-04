@@ -1,8 +1,0 @@
-{
-  "decision": "Block",
-  "reasons": [
-    "key_baseline_failed",
-    "high_risk_not_closed_or_not_covered"
-  ],
-  "policyVersion": "1.0.0"
-}
