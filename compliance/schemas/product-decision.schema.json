@@ -1,0 +1,92 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "product-decision.schema.json",
+  "title": "ProductComplianceDecision",
+  "type": "object",
+  "required": [
+    "productId",
+    "productRunId",
+    "decision",
+    "readyForSubmission",
+    "reasons",
+    "policyVersion",
+    "coverageScore",
+    "serviceDecisions",
+    "generatedAt"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "productId": { "type": "string" },
+    "productRunId": { "type": "string" },
+    "decision": {
+      "type": "string",
+      "enum": ["Pass", "ConditionalPass", "Block"]
+    },
+    "readyForSubmission": { "type": "boolean" },
+    "reasons": {
+      "type": "array",
+      "items": { "type": "string" }
+    },
+    "policyVersion": { "type": "string" },
+    "policyMode": { "type": "string" },
+    "coverageScore": {
+      "type": "object",
+      "required": [
+        "servicesTotal",
+        "servicesPass",
+        "servicesConditionalPass",
+        "servicesBlock",
+        "mandatoryTotal",
+        "mandatoryMatched",
+        "mandatoryGaps",
+        "ratioEligibleTotal",
+        "ratioEligibleMatched",
+        "ratioEligibleCoverageRate",
+        "weightedScore"
+      ],
+      "properties": {
+        "servicesTotal": { "type": "integer" },
+        "servicesPass": { "type": "integer" },
+        "servicesConditionalPass": { "type": "integer" },
+        "servicesBlock": { "type": "integer" },
+        "mandatoryTotal": { "type": "integer" },
+        "mandatoryMatched": { "type": "integer" },
+        "mandatoryGaps": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": ["riskId", "category", "severity"],
+            "properties": {
+              "riskId": { "type": "string" },
+              "category": { "type": "string" },
+              "severity": { "type": "string" },
+              "gapType": { "type": "string" },
+              "service": { "type": "string" }
+            }
+          }
+        },
+        "ratioEligibleTotal": { "type": "integer" },
+        "ratioEligibleMatched": { "type": "integer" },
+        "ratioEligibleCoverageRate": { "type": "number" },
+        "weightedScore": { "type": "number" }
+      }
+    },
+    "serviceDecisions": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["service", "runId", "decision", "decisionPath"],
+        "properties": {
+          "service": { "type": "string" },
+          "runId": { "type": "string" },
+          "decision": {
+            "type": "string",
+            "enum": ["Pass", "ConditionalPass", "Block"]
+          },
+          "decisionPath": { "type": "string" }
+        }
+      }
+    },
+    "generatedAt": { "type": "string" }
+  }
+}

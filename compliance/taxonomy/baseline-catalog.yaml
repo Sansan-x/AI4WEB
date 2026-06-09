@@ -1,40 +1,131 @@
-version: "1.0.0"
-description: Security baseline checklist for microservice threat mapping. Extend with your org checklist.
+version: "1.1.0"
+description: Security baseline checklist aligned with public_baseline categoryCatalog (14 ruleTypes).
 
 baselines:
-  - baselineId: sql-injection-baseline
-    title: SQL Injection Prevention
-    domain: SQLI
-    coverageScope: serviceVerified
+  - baselineId: category-security-config
+    title: Security Configuration
+    ruleType: 安全配置
+    ruleTypeEn: Security Configuration
+    domain: SEC_CONFIG
+    coverageScope: productOnly
     applicabilityHints:
-      requiresDataStore: true
-  - baselineId: command-injection-baseline
+      alwaysApplicable: true
+  - baselineId: category-command-injection
     title: Command Injection Prevention
+    ruleType: 命令注入
+    ruleTypeEn: Command Injection
     domain: CMDI
     coverageScope: serviceVerified
     applicabilityHints:
       requiresCommandExecution: true
-  - baselineId: file-operation-baseline
-    title: Secure File Operations
-    domain: FILE
+  - baselineId: category-template-injection
+    title: Template Injection Prevention
+    ruleType: 模板注入
+    ruleTypeEn: Template Injection
+    domain: TEMPLATE_INJ
     coverageScope: serviceVerified
     applicabilityHints:
-      requiresFileIO: true
-  - baselineId: auth-baseline
-    title: Authentication and Authorization
-    domain: AUTH
-    coverageScope: serviceInferred
+      requiresTemplateEngine: true
+  - baselineId: category-csv-injection
+    title: CSV Injection Prevention
+    ruleType: CSV注入
+    ruleTypeEn: CSV Injection
+    domain: CSV_INJ
+    coverageScope: serviceVerified
+    applicabilityHints:
+      requiresCsvExport: true
+  - baselineId: category-sql-injection
+    title: SQL Injection Prevention
+    ruleType: SQL注入
+    ruleTypeEn: SQL Injection
+    domain: SQLI
+    coverageScope: serviceVerified
+    applicabilityHints:
+      requiresDataStore: true
+  - baselineId: category-xml-injection
+    title: XML Injection Prevention
+    ruleType: XML注入
+    ruleTypeEn: XML Injection
+    domain: XML_INJ
+    coverageScope: serviceVerified
+    applicabilityHints:
+      requiresXmlParsing: true
+  - baselineId: category-xss-injection
+    title: Cross-Site Scripting Prevention
+    ruleType: XSS注入
+    ruleTypeEn: Cross-Site Scripting
+    domain: XSS
+    coverageScope: serviceVerified
     applicabilityHints:
       requiresHttpEntry: true
-  - baselineId: secrets-baseline
-    title: Sensitive Data Protection
+  - baselineId: category-crypto-security
+    title: Cryptographic Algorithm Security
+    ruleType: 密码算法安全
+    ruleTypeEn: Cryptographic Algorithm Security
+    domain: CRYPTO
+    coverageScope: serviceInferred
+    applicabilityHints:
+      requiresCryptoUsage: true
+  - baselineId: category-secrets-protection
+    title: Sensitive Information Protection
+    ruleType: 敏感信息保护
+    ruleTypeEn: Sensitive Information Protection
     domain: SECRETS
     coverageScope: productOnly
     applicabilityHints:
       alwaysApplicable: true
-  - baselineId: dependency-baseline
-    title: Component and Supply Chain Security
-    domain: DEPENDENCY
-    coverageScope: productOnly
+  - baselineId: category-identity-management
+    title: Identity Management
+    ruleType: 身份管理
+    ruleTypeEn: Identity Management
+    domain: AUTH
+    coverageScope: serviceInferred
     applicabilityHints:
-      alwaysApplicable: true
+      requiresHttpEntry: true
+  - baselineId: category-file-upload-download
+    title: File Upload and Download
+    ruleType: 文件上传下载
+    ruleTypeEn: File Upload and Download
+    domain: FILE
+    coverageScope: serviceVerified
+    applicabilityHints:
+      requiresFileIO: true
+  - baselineId: category-dos
+    title: Denial of Service
+    ruleType: D-DoS
+    ruleTypeEn: Denial of Service
+    domain: DOS
+    coverageScope: serviceInferred
+    applicabilityHints:
+      requiresHttpEntry: true
+  - baselineId: category-sudo-privilege
+    title: SUDO Privilege Escalation
+    ruleType: SUDO提权
+    ruleTypeEn: SUDO Privilege Escalation
+    domain: PRIV_ESC
+    coverageScope: serviceVerified
+    applicabilityHints:
+      requiresShellOrSudo: true
+  - baselineId: category-web-security
+    title: Web Security
+    ruleType: WEB安全
+    ruleTypeEn: Web Security
+    domain: WEB
+    coverageScope: serviceInferred
+    applicabilityHints:
+      requiresHttpEntry: true
+
+# Legacy baseline IDs (middleware cases) — retained for baselineToDomainRules compatibility
+legacyBaselines:
+  - baselineId: sql-injection-baseline
+    domain: SQLI
+  - baselineId: command-injection-baseline
+    domain: CMDI
+  - baselineId: file-operation-baseline
+    domain: FILE
+  - baselineId: auth-baseline
+    domain: AUTH
+  - baselineId: secrets-baseline
+    domain: SECRETS
+  - baselineId: dependency-baseline
+    domain: DEPENDENCY

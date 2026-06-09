@@ -13,6 +13,22 @@
       "type": "array",
       "items": { "type": "string" }
     },
-    "policyVersion": { "type": "string" }
+    "policyVersion": { "type": "string" },
+    "policyMode": { "type": "string" },
+    "serviceSummaries": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["service", "decision", "path"],
+        "properties": {
+          "service": { "type": "string" },
+          "decision": {
+            "type": "string",
+            "enum": ["Pass", "ConditionalPass", "Block"]
+          },
+          "path": { "type": "string" }
+        }
+      }
+    }
   }
 }

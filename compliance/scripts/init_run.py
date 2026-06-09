@@ -14,6 +14,11 @@ def main() -> int:
     parser.add_argument("--repo-path", required=True, help="Path to Java repo under analysis")
     parser.add_argument("--services", required=True, help="Comma-separated service names")
     parser.add_argument("--middleware", help="Path to middleware cases JSON")
+    parser.add_argument(
+        "--public-baseline",
+        default="compliance/examples/public_baseline.template.json",
+        help="Path to public baseline template (categoryCatalog authority)",
+    )
     args = parser.parse_args()
 
     root = Path(args.project_root).resolve()
@@ -37,9 +42,10 @@ def main() -> int:
         "repoPath": args.repo_path,
         "services": services,
         "middlewareCasesPath": args.middleware,
+        "publicBaselinePath": args.public_baseline,
         "status": "initialized",
-        "taxonomyVersion": "1.0.0",
-        "policyVersion": "1.0.0",
+        "taxonomyVersion": "1.1.0",
+        "policyVersion": "1.3.0",
     }
     manifest_path = runs_base / "manifest.json"
     manifest_path.write_text(json.dumps(manifest, indent=2, ensure_ascii=False) + "\n", encoding="utf-8")
