@@ -8,11 +8,13 @@ Java 微服务**服务级**威胁风险画像，映射安全排查基线与中�
 
 - **编排**：`compliance-coordinator`（唯一可调度子 Agent）
 - **Worker**：10 个专职 Subagent（context → applicability → signals → synthesize → mapping → gap → policy → evidence）
+- **独立 Agent**：`product-decision`（产品级加权聚合，不嵌入流水线）
 - **能力**：每个 Agent 预加载对应 `.claude/skills/*`
 - **契约**：`compliance/schemas/` + `compliance/scripts/validate_artifact.py`
 
 ```text
 /compliance-run  →  compliance-coordinator  →  workers  →  .claude/runs/{runId}/
+/product-decision-run  →  product-decision  →  product-decision.json（独立，读取各 run 的 08-decisions/）
 ```
 
 ## 快速开始
@@ -21,12 +23,36 @@ Java 微服务**服务级**威胁风险画像，映射安全排查基线与中�
 
 ```bash
 python3 compliance/scripts/run_golden_pipeline.py
-# 产物（三场景）:
-#   golden-demo-soft      → ConditionalPass（domain 匹配，深度不足仅审计）
-#   golden-demo-hard      → ConditionalPass（SQL 服务级 FAIL + wildcard PASS，大项仍匹配）
-#   golden-demo-unmatched → Block（SQLI 无同 domain 用例）
-# 策略: policy-gate v1.2，policyMode=lenient；Pass/ConditionalPass 即送检即合规
-# 日后将 policy-gate.yaml 中 policyMode 改为 strict 可恢复 v1.1 严格判定
+# 产物（四场景 + 产品聚合）:
+#   golden-demo-soft        → ConditionalPass（mandatory + ratio 均满足）
+#   golden-demo-hard        → ConditionalPass（SQL FAIL 仍 domain 匹配）
+#   golden-demo-unmatched   → Block（SQLI mandatory 未覆盖）
+#   golden-demo-ratio-block → Block（AUTH ratio 不足；单服务 Block）
+#   golden-product-eval     → ConditionalPass（池化 soft + ratio-block，产品仍送检可接受）
+# 策略: policy-gate v1.3，policyMode=weighted
+# 微服务决策: .claude/runs/{runId}/08-decisions/{service}.json
+# 日后将 policy-gate.yaml 中 policyMode 改为 lenient/strict 可恢复旧判定
+```
+
+### 1b. 产品级送检结论（独立，不嵌入流水线）
+
+各微服务完成 `/compliance-run` 后，单独运行：
+
+```bash
+python3 compliance/scripts/init_product_eval.py \
+  --product-id demo-product \
+  --product-run-id my-product-eval \
+  --service-runs golden-demo-soft:order-service,golden-demo-ratio-block:order-service
+
+python3 compliance/scripts/aggregate_product_decision.py \
+  --manifest .claude/runs/my-product-eval/product-manifest.json \
+  --project-root .
+```
+
+或 Claude Code / OpenCode：
+
+```bash
+/product-decision-run --service-runs golden-demo-soft:order-service,golden-demo-ratio-block:order-service
 ```
 
 ### 2. Claude Code 交互
@@ -59,11 +85,13 @@ claude --agent compliance-coordinator -p "Run compliance pipeline for repo compl
 
 | 路径 | 说明 |
 |------|------|
-| `.claude/agents/compliance/` | Claude Code：11 个 Subagent 定义 |
-| `.opencode/agents/` | OpenCode：11 个扁平 Agent 定义 |
-| `.claude/skills/` | 12 个 Skill（Claude + OpenCode 共用） |
-| `.claude/commands/compliance-run.md` | Claude Code Slash 命令 |
-| `.opencode/commands/compliance-run.md` | OpenCode Slash 命令 |
+| `.claude/agents/compliance/` | Claude Code：11 个 pipeline Subagent + 1 个独立 `product-decision` |
+| `.opencode/agents/` | OpenCode：11 个 pipeline worker + 1 个独立 `product-decision` |
+| `.claude/skills/` | 13 个 Skill（Claude + OpenCode 共用） |
+| `.claude/commands/compliance-run.md` | Claude Code：微服务合规流水线 |
+| `.claude/commands/product-decision-run.md` | Claude Code：产品级加权聚合 |
+| `.opencode/commands/compliance-run.md` | OpenCode：微服务合规流水线 |
+| `.opencode/commands/product-decision-run.md` | OpenCode：产品级加权聚合 |
 | `opencode.json` | OpenCode 项目配置（权限、默认 Agent、插件） |
 | `AGENTS.md` | 项目规则（OpenCode 优先读取） |
 | `compliance/taxonomy/` | 风险域、基线清单、策略门禁 |
@@ -73,7 +101,7 @@ claude --agent compliance-coordinator -p "Run compliance pipeline for repo compl
 
 ## 自定义基线
 
-编辑 [`compliance/taxonomy/baseline-catalog.yaml`](compliance/taxonomy/baseline-catalog.yaml)，重启会话后生效。
+[`compliance/taxonomy/baseline-catalog.yaml`](compliance/taxonomy/baseline-catalog.yaml) 与 [`public_baseline.template.json`](compliance/examples/public_baseline.template.json) 的 `categoryCatalog` 对齐（14 个 `ruleType` 大项）。编辑 catalog 后重启会话生效；可用 `sync_baseline_catalog.py --catalog ...` 校验是否与 template 一致。
 
 ## 公开产品安全排查基线
 
@@ -111,19 +139,21 @@ python3 compliance/scripts/validate_artifact.py \
 
 ### Claude Code
 
-- [ ] `claude agents` 列出 11 个 compliance agents
-- [ ] `/skills` 列出 12 个 project skills
-- [ ] `run_golden_pipeline.py` 退出码 0，且 `08-decision.json` 为 `Block`
-- [ ] `order-service` 的 applicability 排除 CMDI/FILE
+- [ ] `claude agents` 列出 12 个 compliance agents（含独立 `product-decision`）
+- [ ] `/skills` 列出 13 个 project skills
+- [ ] `run_golden_pipeline.py` 退出码 0，且 `golden-demo-unmatched/08-decisions/order-service.json` 为 `Block`（`mandatory_coverage_gap`）
+- [ ] `golden-product-eval/product-decision.json` 为 `ConditionalPass`（池化 ratio）
+- [ ] `order-service` 的 applicability 覆盖 14 个 `ruleType`（CMDI/FILE 等可在 excluded 中）
 - [ ] `09-evidence/index.json` 含 `agentRunTrace`
 
 ### OpenCode
 
 - [ ] `opencode` 启动无 `ProviderInitError`（已设置 `OPENCODE_MODEL`）
-- [ ] Agent 列表含 `compliance-coordinator` 及 10 个 worker
-- [ ] `/skills` 或 skill 工具可见 12 个 skills
+- [ ] Agent 列表含 `compliance-coordinator`、10 个 pipeline worker 及独立 `product-decision`
+- [ ] `/skills` 或 skill 工具可见 13 个 skills
 - [ ] `run_golden_pipeline.py` 退出码 0
-- [ ] `/compliance-run` 产出 `.claude/runs/{runId}/08-decision.json`
+- [ ] `/compliance-run` 产出 `08-decisions/{service}.json` 与 run 级 `08-decision.json`
+- [ ] `/product-decision-run` 产出 `product-decision.json`
 
 ## 故障排查（OpenCode）
 

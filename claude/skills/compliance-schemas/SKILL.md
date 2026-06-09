@@ -19,6 +19,9 @@ Canonical schemas live in `compliance/schemas/`. Load the relevant file from `re
 | risk-case-mapping | risk-case-mapping.schema.json |
 | gaps | gaps.schema.json |
 | decision | decision.schema.json |
+| service-decision | service-decision.schema.json |
+| product-manifest | product-manifest.schema.json |
+| product-decision | product-decision.schema.json |
 | service-slices | service-slices.schema.json |
 | evidence-package | evidence-package.schema.json |
 

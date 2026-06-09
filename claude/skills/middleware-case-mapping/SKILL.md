@@ -9,7 +9,7 @@ description: Maps RiskPoints to middleware test cases using risk-taxonomy baseli
 
 - `.claude/runs/{runId}/05-risk-points.json`
 - Middleware cases JSON (from manifest `middlewareCasesPath`)
-- `compliance/taxonomy/risk-taxonomy.yaml` → `baselineToDomainRules`
+- `compliance/taxonomy/risk-taxonomy.yaml` → `ruleTypeToDomain`, `baselineToDomainRules`
 - `compliance/taxonomy/policy-gate.yaml` → `policyMode`
 
 ## Output
@@ -18,7 +18,9 @@ description: Maps RiskPoints to middleware test cases using risk-taxonomy baseli
 
 ## Algorithm
 
-1. Map each middleware `baselineType` to domain (SQLI, CMDI, FILE, …) via rules.
+1. Map each middleware `baselineType` to domain via `mapToDomain()`:
+   - First check exact match in `ruleTypeToDomain` (for ruleType-style baselineType values).
+   - Then apply `baselineToDomainRules` substring matching on lowercase `baselineType`.
 2. For each RiskPoint, find cases with matching domain using service targeting priority:
    - First match cases where `targetService == <risk.service>`.
    - If no service-specific match exists, fallback to `targetService == "*"`.
@@ -45,5 +47,5 @@ description: Maps RiskPoints to middleware test cases using risk-taxonomy baseli
 
 ## mappingExplanation
 
-Summarize excluded baselines and unmatched domains in string array.
+Summarize excluded ruleTypes/domains and unmatched domains in string array.
 When wildcard (`targetService="*"`) matches are used, include audit-friendly notes (for example: wildcard case IDs/domains used as fallback coverage).

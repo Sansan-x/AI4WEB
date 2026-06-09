@@ -13,14 +13,14 @@ This project implements **service-level threat risk profiles** for Java microser
 
 - All pipeline artifacts are JSON under `.claude/runs/{runId}/`.
 - Follow paths and schemas in the `compliance-orchestrator` skill.
-- Baseline checklist: `compliance/taxonomy/baseline-catalog.yaml` (edit and restart session to reload).
+- Baseline checklist: `compliance/taxonomy/baseline-catalog.yaml` — 14 ruleTypes aligned with `public_baseline.template.json` `categoryCatalog` (edit and restart session to reload).
 - Only **compliance-coordinator** may spawn subagents via the Agent tool.
 - Worker agents write **only** under `.claude/runs/` unless reading the target Java repo.
 
 ## Validation
 
 ```bash
-python3 compliance/scripts/validate_artifact.py --schema <key> --file <path>
+python3 compliance/scripts/validate_artifact.py --schema <key> --file <path> --project-root .
 ```
 
 ## Golden demo

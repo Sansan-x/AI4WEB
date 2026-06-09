@@ -16,7 +16,8 @@ python3 compliance/scripts/init_run.py \
   --project-root . \
   --repo-path <REPO_PATH> \
   --services <svc1,svc2> \
-  --middleware <MIDDLEWARE_JSON>
+  --middleware <MIDDLEWARE_JSON> \
+  --public-baseline compliance/examples/public_baseline.template.json
 ```
 
 Capture `runId` from stdout JSON. All artifacts go under `.claude/runs/{runId}/`.
@@ -33,10 +34,12 @@ Capture `runId` from stdout JSON. All artifacts go under `.claude/runs/{runId}/`
 | 5 | coordinator + merge_risk_points.py | `05-risk-points.json` |
 | 6 | case-mapping | `06-mappings.json` |
 | 7 | coverage-gap | `07-gaps.json` |
-| 8 | policy-decision | `08-decision.json` |
+| 8 | policy-decision | `08-decisions/{service}.json`, `08-decision.json` (run summary) |
 | 9 | evidence-pack | `09-evidence/index.json` |
 
-**Submission gate (policy v1.2, `policyMode: lenient`)**: `Pass` and `ConditionalPass` in `08-decision.json` mean 送检即合规; only `Block` prevents submission. Domain match between open risk `category` and middleware case baseline domain is sufficient for `ConditionalPass`.
+**Submission gate (policy v1.3, `policyMode: weighted`)**: per-service `08-decisions/{service}.json` — `Pass`/`ConditionalPass` = 送检即合规. P0 + key-baseline P1 mandatory; other P1/P2/P3 by coverage ratio. Run-level `08-decision.json` is worst-of summary.
+
+**Product-level gate (standalone)**: use `/product-decision-run` or `product-decision` agent — not part of this pipeline.
 
 ## Validation gate
 
@@ -46,10 +49,11 @@ After each phase, validate artifacts:
 python3 compliance/scripts/validate_artifact.py \
   --schema <schema-key> \
   --file .claude/runs/{runId}/<artifact>.json \
-  --schema-dir compliance/schemas
+  --schema-dir compliance/schemas \
+  --project-root .
 ```
 
-Schema keys: `service-slices`, `service-context`, `applicability`, `threat-signal`, `service-risk-profile`, `risk-points`, `risk-case-mapping`, `gaps`, `decision`, `evidence-package`.
+Schema keys: `service-slices`, `service-context`, `applicability`, `threat-signal`, `service-risk-profile`, `risk-points`, `risk-case-mapping`, `gaps`, `decision`, `service-decision`, `evidence-package`.
 
 On validation failure: write `08-decision.json` with `{"decision":"Block","reasons":["pipelineDegraded"]}` and **stop** delegating to further subagents.
 
@@ -69,7 +73,7 @@ For parallel signals, issue multiple task calls for `exposure-signal`, `dataflow
 
 When delegating to a worker, always include:
 
-- `runId`, `serviceName`, `repoPath` (from manifest)
+- `runId`, `serviceName`, `repoPath`, `publicBaselinePath` (from manifest)
 - exact **output file path**
 - path to upstream inputs (context, applicability, signals)
 
@@ -84,5 +88,5 @@ python3 compliance/scripts/merge_risk_points.py \
 ## Granularity rules
 
 - Max 3 `anchors` per ThreatSignal
-- Do not map baselines excluded in `02-applicability`
+- Do not map ruleTypes/domains excluded in `02-applicability`
 - Never produce CWE dumps or full-file audit reports

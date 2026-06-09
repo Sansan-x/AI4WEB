@@ -11,4 +11,4 @@ Inputs: `02-applicability/{service}.json` and all files under `03-signals/{servi
 
 Write `.claude/runs/{runId}/04-profiles/{service}.json`. Validate schema `service-risk-profile`.
 
-Merge multiple signals per domain into one RiskPoint. Skip excluded domains entirely.
+Merge multiple signals per domain into one RiskPoint. Skip excluded ruleTypes/domains entirely.

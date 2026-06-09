@@ -17,6 +17,6 @@ Follow the `compliance-orchestrator` skill exactly:
 4. Validate each artifact with `validate_artifact.py` before the next phase.
 5. On validation failure, write Block decision with `pipelineDegraded` and stop.
 
-When delegating, pass `runId`, `serviceName`, `repoPath`, input paths, and **exact output path** under `.claude/runs/{runId}/`.
+When delegating, pass `runId`, `serviceName`, `repoPath`, `publicBaselinePath`, input paths, and **exact output path** under `.claude/runs/{runId}/`.
 
 Never perform line-by-line code audit; enforce service-level risk profile granularity.

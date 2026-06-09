@@ -1,6 +1,6 @@
 ---
 name: threat-signal-exposure
-description: Detects service-level exposure threats (anonymous APIs, Actuator, CORS, Swagger) for Java microservices. Use for exposure-signal subagent.
+description: Detects service-level exposure threats (identity, web security, DoS) for Java microservices. Use for exposure-signal subagent.
 ---
 
 # Threat Signal — Exposure
@@ -11,14 +11,27 @@ description: Detects service-level exposure threats (anonymous APIs, Actuator, C
 
 Schema: `threat-signal` with `signalType: exposure`
 
-## Only evaluate domains marked applicable in `02-applicability`
+## Applicable domains (from `02-applicability`)
 
-For excluded domains, emit one signal with `strength: not_applicable`.
+Only scan domains whose ruleType is in `applicableBaselines`:
+
+| ruleType | domain |
+|----------|--------|
+| 身份管理 | AUTH |
+| WEB安全 | WEB |
+| D-DoS | DOS |
+
+For excluded ruleTypes, emit `strength: not_applicable` for the bridged domain.
 
 ## Patterns (Grep, read-only)
 
-- Missing auth on `@RestController` methods
-- `springdoc`, `swagger` public without security
+| Domain | Patterns |
+|--------|----------|
+| AUTH | missing auth on `@RestController` methods, hardcoded credentials |
+| WEB | `springdoc`/`swagger` public without security, CSRF disabled, missing security headers |
+| DOS | unbounded queries, missing pagination, ReDoS-prone regex, no rate limiting |
+
+Also check:
 - `management.endpoints.web.exposure.include: '*'` or Actuator without auth
 - Permissive CORS `allowedOrigins: "*"`
 

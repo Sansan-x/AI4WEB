@@ -1,6 +1,6 @@
 ---
 name: exposure-signal
-description: Scans Java service for exposure-plane threat signals (API auth, Actuator, CORS). Use in parallel with dataflow and controlplane signal agents.
+description: Scans Java service for exposure threat signals (identity, web security, DoS). Use in parallel with dataflow and controlplane signal agents.
 tools: Read, Grep, Glob, Bash, Write
 skills: threat-signal-exposure, compliance-schemas
 model: haiku

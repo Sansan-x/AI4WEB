@@ -1,6 +1,6 @@
 ---
 name: dataflow-signal
-description: Scans Java service for dataflow threat signals (SQLi, file path, SSRF). Use in parallel with exposure and controlplane signal agents.
+description: Scans Java service for dataflow threat signals (SQLi, file, XSS, XML, CSV, template injection). Use in parallel with exposure and controlplane signal agents.
 tools: Read, Grep, Glob, Bash, Write
 skills: threat-signal-dataflow, compliance-schemas
 model: haiku

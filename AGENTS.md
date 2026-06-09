@@ -21,7 +21,7 @@ This project implements **service-level threat risk profiles** for Java microser
 
 - All pipeline artifacts are JSON under `.claude/runs/{runId}/`.
 - Follow paths and schemas in the `compliance-orchestrator` skill.
-- Baseline checklist: `compliance/taxonomy/baseline-catalog.yaml` (edit and restart session to reload).
+- Baseline checklist: `compliance/taxonomy/baseline-catalog.yaml` — 14 ruleTypes aligned with `public_baseline.template.json` `categoryCatalog` (edit and restart session to reload).
 - **Claude Code**: only **compliance-coordinator** may spawn subagents via the Agent tool.
 - **OpenCode**: only **compliance-coordinator** may invoke workers via the **task** tool (subagent names without `@`).
 - Worker agents write **only** under `.claude/runs/` unless reading the target Java repo.
@@ -29,7 +29,7 @@ This project implements **service-level threat risk profiles** for Java microser
 ## Validation
 
 ```bash
-python3 compliance/scripts/validate_artifact.py --schema <key> --file <path>
+python3 compliance/scripts/validate_artifact.py --schema <key> --file <path> --project-root .
 ```
 
 ## Golden demo
@@ -40,7 +40,7 @@ python3 compliance/scripts/run_golden_pipeline.py
 
 Demo Java service: `compliance/fixtures/demo-service/`
 
-Default policy gate: **v1.2** (`compliance/taxonomy/policy-gate.yaml`, `policyMode: lenient`). Open risk with same **domain** as a middleware case → `ConditionalPass` (submission-compliant). Set `policyMode: strict` to restore v1.1 blocking on FAIL/gaps.
+Default policy gate: **v1.3** (`compliance/taxonomy/policy-gate.yaml`, `policyMode: weighted`). P0 + key-baseline P1 mandatory; other P1/P2/P3 by coverage ratio. Pass/ConditionalPass = 送检即合规. Product-level aggregation is standalone via `/product-decision-run` (not embedded in `/compliance-run`). Set `policyMode: lenient` or `strict` for legacy behavior.
 
 ## Agent definitions (dual-track)
 
