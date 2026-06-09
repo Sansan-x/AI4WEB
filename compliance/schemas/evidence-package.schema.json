@@ -1,0 +1,44 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "evidence-package.schema.json",
+  "title": "EvidencePackage",
+  "type": "object",
+  "required": [
+    "version",
+    "releaseId",
+    "generatedAt",
+    "policyVersion",
+    "taxonomyVersion",
+    "decision",
+    "riskPoints",
+    "mappings",
+    "middlewareCases",
+    "agentRunTrace"
+  ],
+  "properties": {
+    "version": { "type": "string" },
+    "releaseId": { "type": "string" },
+    "generatedAt": { "type": "string", "format": "date-time" },
+    "policyVersion": { "type": "string" },
+    "taxonomyVersion": { "type": "string" },
+    "decision": {
+      "type": "object",
+      "required": ["decision", "reasons"],
+      "properties": {
+        "decision": {
+          "type": "string",
+          "enum": ["Pass", "ConditionalPass", "Block"]
+        },
+        "reasons": {
+          "type": "array",
+          "items": { "type": "string" }
+        }
+      }
+    },
+    "riskPoints": { "type": "array" },
+    "middlewareCases": { "type": "array" },
+    "mappings": { "type": "array" },
+    "gaps": { "type": "array" },
+    "agentRunTrace": { "type": "array" }
+  }
+}

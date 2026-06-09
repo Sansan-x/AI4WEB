@@ -1,0 +1,9 @@
+[
+  {
+    "caseId": "CASE-AUTH-001",
+    "baselineType": "auth-baseline",
+    "result": "PASS",
+    "targetService": "*",
+    "execTime": "2026-05-29T10:00:00Z"
+  }
+]

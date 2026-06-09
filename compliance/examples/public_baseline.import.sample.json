@@ -1,0 +1,64 @@
+{
+  "importBatchId": "2026-Q2-product-scan",
+  "importedAt": "2026-06-08T10:00:00Z",
+  "rules": [
+    {
+      "ruleType": "SQL注入",
+      "ruleId": "sql-injection-prevention",
+      "ruleName": "SQL注入防护排查",
+      "datas": [
+        {
+          "service": "order-service",
+          "status": "已完成",
+          "selectResult": "通过"
+        },
+        {
+          "service": "user-service",
+          "status": "未完成",
+          "selectResult": "待测"
+        }
+      ]
+    },
+    {
+      "ruleType": "WEB安全",
+      "ruleId": "web-api-no-authentication",
+      "ruleName": "接口无认证排查",
+      "datas": [
+        {
+          "service": "order-service",
+          "status": "已完成",
+          "selectResult": "不通过"
+        },
+        {
+          "service": "user-service",
+          "status": "已完成",
+          "selectResult": "通过"
+        }
+      ]
+    },
+    {
+      "ruleType": "文件上传下载",
+      "ruleId": "file-upload-validation",
+      "ruleName": "文件上传校验",
+      "datas": [
+        {
+          "service": "user-service",
+          "status": "未完成",
+          "selectResult": "待测"
+        }
+      ]
+    },
+    {
+      "ruleType": "敏感信息保护",
+      "ruleId": "secrets-no-credential-logging",
+      "ruleName": "禁止打印认证凭据",
+      "datas": [
+        {
+          "service": "order-service",
+          "status": "已完成",
+          "selectResult": "通过"
+        }
+      ]
+    }
+  ]
+}

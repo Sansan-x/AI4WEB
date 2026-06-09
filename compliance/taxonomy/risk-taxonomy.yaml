@@ -1,0 +1,99 @@
+version: "1.0.0"
+updatedAt: "2026-05-29"
+owner: security-governance
+description: Normalized risk domains and baseline mapping for Java microservice compliance.
+
+severityModel:
+  levels: [P0, P1, P2, P3]
+  defaults:
+    SQLI: P1
+    CMDI: P1
+    FILE: P1
+    AUTH: P1
+    SECRETS: P1
+    DEPENDENCY: P2
+    INFO_DISCLOSURE: P2
+    SSRF: P2
+    XSS: P2
+
+riskDomains:
+  - code: SQLI
+    name: SQL Injection
+    baselineRefs:
+      - sql-injection-baseline
+      - "TOP: data access security"
+    keySignals:
+      - raw SQL string concatenation
+      - mybatis ${} usage
+    defaultCoverageScope: serviceVerified
+  - code: CMDI
+    name: Command Injection
+    baselineRefs:
+      - command-injection-baseline
+    keySignals:
+      - Runtime.exec
+      - ProcessBuilder with untrusted args
+    defaultCoverageScope: serviceVerified
+  - code: FILE
+    name: File Operation Security
+    baselineRefs:
+      - file-operation-baseline
+    keySignals:
+      - path traversal
+      - arbitrary file upload
+    defaultCoverageScope: serviceVerified
+  - code: AUTH
+    name: Authentication and Authorization
+    baselineRefs:
+      - auth-baseline
+    keySignals:
+      - missing resource-level authorization
+      - IDOR
+    defaultCoverageScope: serviceInferred
+  - code: SECRETS
+    name: Sensitive Data Protection
+    baselineRefs:
+      - secrets-baseline
+    keySignals:
+      - secrets in logs
+      - plaintext key storage
+    defaultCoverageScope: productOnly
+  - code: DEPENDENCY
+    name: Dependency Security
+    baselineRefs:
+      - dependency-baseline
+    keySignals:
+      - known vulnerable dependencies
+    defaultCoverageScope: productOnly
+
+baselineToDomainRules:
+  - baselineContains: sql
+    mapToDomain: SQLI
+  - baselineContains: 命令
+    mapToDomain: CMDI
+  - baselineContains: command
+    mapToDomain: CMDI
+  - baselineContains: 文件
+    mapToDomain: FILE
+  - baselineContains: file
+    mapToDomain: FILE
+  - baselineContains: 鉴权
+    mapToDomain: AUTH
+  - baselineContains: auth
+    mapToDomain: AUTH
+  - baselineContains: 敏感
+    mapToDomain: SECRETS
+  - baselineContains: secret
+    mapToDomain: SECRETS
+  - baselineContains: 组件
+    mapToDomain: DEPENDENCY
+  - baselineContains: dependency
+    mapToDomain: DEPENDENCY
+
+coverageScopes:
+  - code: productOnly
+    description: Covered at product level only.
+  - code: serviceInferred
+    description: Inferred from service surface; pending verification.
+  - code: serviceVerified
+    description: Linked to service code or targeted test evidence.

@@ -1,0 +1,208 @@
+{
+  "version": "1.0.0",
+  "description": "公开产品安全排查基线（模板，待导入测试数据）",
+  "categoryCatalog": [
+    { "ruleType": "安全配置", "ruleTypeEn": "Security Configuration" },
+    { "ruleType": "命令注入", "ruleTypeEn": "Command Injection" },
+    { "ruleType": "模板注入", "ruleTypeEn": "Template Injection" },
+    { "ruleType": "CSV注入", "ruleTypeEn": "CSV Injection" },
+    { "ruleType": "SQL注入", "ruleTypeEn": "SQL Injection" },
+    { "ruleType": "XML注入", "ruleTypeEn": "XML Injection" },
+    { "ruleType": "XSS注入", "ruleTypeEn": "Cross-Site Scripting" },
+    { "ruleType": "密码算法安全", "ruleTypeEn": "Cryptographic Algorithm Security" },
+    { "ruleType": "敏感信息保护", "ruleTypeEn": "Sensitive Information Protection" },
+    { "ruleType": "身份管理", "ruleTypeEn": "Identity Management" },
+    { "ruleType": "文件上传下载", "ruleTypeEn": "File Upload and Download" },
+    { "ruleType": "D-DoS", "ruleTypeEn": "Denial of Service" },
+    { "ruleType": "SUDO提权", "ruleTypeEn": "SUDO Privilege Escalation" },
+    { "ruleType": "WEB安全", "ruleTypeEn": "Web Security" }
+  ],
+  "rules": [
+    {
+      "ruleType": "安全配置",
+      "ruleId": "security-config-compliance",
+      "ruleName": "安全配置合规排查",
+      "datas": []
+    },
+    {
+      "ruleType": "命令注入",
+      "ruleId": "command-injection-prevention",
+      "ruleName": "命令注入防护排查",
+      "datas": []
+    },
+    {
+      "ruleType": "模板注入",
+      "ruleId": "template-injection-prevention",
+      "ruleName": "模板注入防护排查",
+      "datas": []
+    },
+    {
+      "ruleType": "CSV注入",
+      "ruleId": "csv-injection-prevention",
+      "ruleName": "CSV注入防护排查",
+      "datas": []
+    },
+    {
+      "ruleType": "SQL注入",
+      "ruleId": "sql-injection-prevention",
+      "ruleName": "SQL注入防护排查",
+      "datas": []
+    },
+    {
+      "ruleType": "XML注入",
+      "ruleId": "xml-injection-prevention",
+      "ruleName": "XML注入防护排查",
+      "datas": []
+    },
+    {
+      "ruleType": "XSS注入",
+      "ruleId": "xss-injection-prevention",
+      "ruleName": "XSS注入防护排查",
+      "datas": []
+    },
+    {
+      "ruleType": "密码算法安全",
+      "ruleId": "crypto-no-weak-or-private-algorithm",
+      "ruleName": "禁止使用私有加密算法或弱密码算法",
+      "datas": []
+    },
+    {
+      "ruleType": "密码算法安全",
+      "ruleId": "crypto-default-secure-protocol",
+      "ruleName": "协议和算法默认安全",
+      "datas": []
+    },
+    {
+      "ruleType": "密码算法安全",
+      "ruleId": "crypto-no-fixed-salt",
+      "ruleName": "禁止算法中的盐值固定",
+      "datas": []
+    },
+    {
+      "ruleType": "密码算法安全",
+      "ruleId": "crypto-secure-random",
+      "ruleName": "安全随机数",
+      "datas": []
+    },
+    {
+      "ruleType": "敏感信息保护",
+      "ruleId": "secrets-no-plaintext-in-memory",
+      "ruleName": "内存明文认证凭据",
+      "datas": []
+    },
+    {
+      "ruleType": "敏感信息保护",
+      "ruleId": "secrets-no-plaintext-storage",
+      "ruleName": "认证凭据明文存储",
+      "datas": []
+    },
+    {
+      "ruleType": "敏感信息保护",
+      "ruleId": "secrets-no-credential-logging",
+      "ruleName": "禁止打印认证凭据",
+      "datas": []
+    },
+    {
+      "ruleType": "身份管理",
+      "ruleId": "identity-no-hardcoded-credentials",
+      "ruleName": "密码密钥硬编码",
+      "datas": []
+    },
+    {
+      "ruleType": "文件上传下载",
+      "ruleId": "file-upload-validation",
+      "ruleName": "文件上传校验",
+      "datas": []
+    },
+    {
+      "ruleType": "文件上传下载",
+      "ruleId": "file-path-traversal-prevention",
+      "ruleName": "文件读写防目录遍历",
+      "datas": []
+    },
+    {
+      "ruleType": "文件上传下载",
+      "ruleId": "file-secure-compression-handling",
+      "ruleName": "安全处理压缩文件",
+      "datas": []
+    },
+    {
+      "ruleType": "D-DoS",
+      "ruleId": "dos-message-size-flow-control",
+      "ruleName": "DOS-报文大小和流量控制能力",
+      "datas": []
+    },
+    {
+      "ruleType": "D-DoS",
+      "ruleId": "dos-input-param-count-length-limit",
+      "ruleName": "DOS-输入参数总数和长度控制能力",
+      "datas": []
+    },
+    {
+      "ruleType": "D-DoS",
+      "ruleId": "dos-redos-prevention",
+      "ruleName": "DOS-ReDOS攻击",
+      "datas": []
+    },
+    {
+      "ruleType": "D-DoS",
+      "ruleId": "dos-memory-resource-limit-cleanup",
+      "ruleName": "DOS-限制和及时清理内存资源",
+      "datas": []
+    },
+    {
+      "ruleType": "D-DoS",
+      "ruleId": "dos-query-pagination-output-limit",
+      "ruleName": "DOS-查询分页（输出）总数限制",
+      "datas": []
+    },
+    {
+      "ruleType": "SUDO提权",
+      "ruleId": "sudo-privilege-escalation-prevention",
+      "ruleName": "SUDO提权防护排查",
+      "datas": []
+    },
+    {
+      "ruleType": "WEB安全",
+      "ruleId": "web-api-no-authentication",
+      "ruleName": "接口无认证排查",
+      "datas": []
+    },
+    {
+      "ruleType": "WEB安全",
+      "ruleId": "web-api-no-authorization",
+      "ruleName": "接口无鉴权排查",
+      "datas": []
+    },
+    {
+      "ruleType": "WEB安全",
+      "ruleId": "web-horizontal-privilege-escalation",
+      "ruleName": "接口横向越权",
+      "datas": []
+    },
+    {
+      "ruleType": "WEB安全",
+      "ruleId": "web-url-bypass-prevention",
+      "ruleName": "URL绕过",
+      "datas": []
+    },
+    {
+      "ruleType": "WEB安全",
+      "ruleId": "web-session-timeout",
+      "ruleName": "会话不超时",
+      "datas": []
+    },
+    {
+      "ruleType": "WEB安全",
+      "ruleId": "web-security-response-headers",
+      "ruleName": "安全响应头",
+      "datas": []
+    },
+    {
+      "ruleType": "WEB安全",
+      "ruleId": "web-csrf-prevention",
+      "ruleName": "CSRF跨站请求伪造",
+      "datas": []
+    }
+  ]
+}

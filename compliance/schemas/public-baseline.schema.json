@@ -1,0 +1,114 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "public-baseline.schema.json",
+  "title": "PublicSecurityBaseline",
+  "oneOf": [
+    { "$ref": "#/$defs/baselineDocument" },
+    { "$ref": "#/$defs/importDocument" }
+  ],
+  "$defs": {
+    "dataEntry": {
+      "type": "object",
+      "required": ["service", "status", "selectResult"],
+      "additionalProperties": false,
+      "properties": {
+        "service": { "type": "string" },
+        "status": {
+          "type": "string",
+          "enum": ["已完成", "未完成", ""]
+        },
+        "selectResult": { "type": "string" }
+      }
+    },
+    "rule": {
+      "type": "object",
+      "required": ["ruleType", "ruleId", "ruleName", "datas"],
+      "additionalProperties": false,
+      "properties": {
+        "ruleType": { "type": "string" },
+        "ruleId": { "type": "string" },
+        "ruleName": { "type": "string" },
+        "datas": {
+          "type": "array",
+          "items": { "$ref": "#/$defs/dataEntry" }
+        },
+        "covered": { "type": "boolean" }
+      }
+    },
+    "categoryEntry": {
+      "type": "object",
+      "required": ["ruleType", "ruleTypeEn"],
+      "additionalProperties": false,
+      "properties": {
+        "ruleType": { "type": "string" },
+        "ruleTypeEn": { "type": "string" }
+      }
+    },
+    "importMeta": {
+      "type": "object",
+      "required": ["importBatchId", "importedAt"],
+      "additionalProperties": false,
+      "properties": {
+        "importBatchId": { "type": "string" },
+        "importedAt": { "type": "string" }
+      }
+    },
+    "summary": {
+      "type": "object",
+      "required": ["totalRules", "coveredRules", "services", "coverageByService"],
+      "additionalProperties": false,
+      "properties": {
+        "totalRules": { "type": "integer" },
+        "coveredRules": { "type": "integer" },
+        "services": {
+          "type": "array",
+          "items": { "type": "string" }
+        },
+        "coverageByService": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "object",
+            "required": ["total", "covered"],
+            "additionalProperties": false,
+            "properties": {
+              "total": { "type": "integer" },
+              "covered": { "type": "integer" }
+            }
+          }
+        }
+      }
+    },
+    "baselineDocument": {
+      "type": "object",
+      "required": ["version", "description", "categoryCatalog", "rules"],
+      "additionalProperties": false,
+      "properties": {
+        "version": { "type": "string" },
+        "description": { "type": "string" },
+        "categoryCatalog": {
+          "type": "array",
+          "items": { "$ref": "#/$defs/categoryEntry" }
+        },
+        "rules": {
+          "type": "array",
+          "items": { "$ref": "#/$defs/rule" }
+        },
+        "importMeta": { "$ref": "#/$defs/importMeta" },
+        "summary": { "$ref": "#/$defs/summary" }
+      }
+    },
+    "importDocument": {
+      "type": "object",
+      "required": ["importBatchId", "importedAt", "rules"],
+      "additionalProperties": false,
+      "properties": {
+        "importBatchId": { "type": "string" },
+        "importedAt": { "type": "string" },
+        "rules": {
+          "type": "array",
+          "items": { "$ref": "#/$defs/rule" }
+        }
+      }
+    }
+  }
+}

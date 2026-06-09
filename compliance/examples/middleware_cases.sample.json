@@ -1,0 +1,37 @@
+[
+  {
+    "caseId": "CASE-SQL-001",
+    "baselineType": "sql-injection-baseline",
+    "result": "FAIL",
+    "targetService": "order-service",
+    "execTime": "2026-05-29T10:00:00Z"
+  },
+  {
+    "caseId": "CASE-SQL-ALL-001",
+    "baselineType": "sql-injection-baseline",
+    "result": "PASS",
+    "targetService": "*",
+    "execTime": "2026-05-29T10:00:00Z"
+  },
+  {
+    "caseId": "CASE-CMD-001",
+    "baselineType": "command-injection-baseline",
+    "result": "SKIP",
+    "targetService": "*",
+    "execTime": "2026-05-29T10:00:00Z"
+  },
+  {
+    "caseId": "CASE-FILE-001",
+    "baselineType": "file-operation-baseline",
+    "result": "PASS",
+    "targetService": "*",
+    "execTime": "2026-05-29T10:00:00Z"
+  },
+  {
+    "caseId": "CASE-AUTH-001",
+    "baselineType": "auth-baseline",
+    "result": "PASS",
+    "targetService": "*",
+    "execTime": "2026-05-29T10:00:00Z"
+  }
+]
