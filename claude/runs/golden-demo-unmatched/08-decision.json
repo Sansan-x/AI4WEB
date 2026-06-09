@@ -1,0 +1,7 @@
+{
+  "decision": "Block",
+  "reasons": [
+    "risk_domain_without_matching_case"
+  ],
+  "policyVersion": "1.2.0"
+}

@@ -1,0 +1,12 @@
+{
+  "runId": "golden-demo-soft",
+  "createdAt": "2026-06-04T03:42:31.874907+00:00",
+  "repoPath": "compliance/fixtures/demo-service",
+  "services": [
+    "order-service"
+  ],
+  "middlewareCasesPath": "compliance/examples/middleware_cases.sample.json",
+  "status": "initialized",
+  "taxonomyVersion": "1.0.0",
+  "policyVersion": "1.0.0"
+}

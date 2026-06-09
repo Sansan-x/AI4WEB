@@ -1,0 +1,11 @@
+{
+  "gaps": [
+    {
+      "riskId": "R-SQL-001",
+      "service": "order-service",
+      "category": "SQLI",
+      "gapType": "NoCaseMatched",
+      "suggestion": "Add sql-injection-baseline middleware case for order-service or wildcard"
+    }
+  ]
+}

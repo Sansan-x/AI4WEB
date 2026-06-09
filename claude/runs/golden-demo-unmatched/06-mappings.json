@@ -1,0 +1,16 @@
+{
+  "mappings": [
+    {
+      "riskId": "R-AUTH-001",
+      "caseId": "CASE-AUTH-001",
+      "coverageState": "Covered",
+      "coverageScope": "serviceInferred",
+      "confidence": 0.85,
+      "explanation": "AUTH domain matched via wildcard middleware case [domain_matched]"
+    }
+  ],
+  "mappingExplanation": [
+    "SQLI open risk has no middleware case in same domain (unmatched fixture)",
+    "AUTH domain matched"
+  ]
+}
