@@ -1,5 +1,5 @@
 ---
-description: Scans Java service for control-plane threat signals (authz, secrets, dependencies, CMDI). Use in parallel with exposure and dataflow signal agents.
+description: Scans Java service for control-plane threat signals (secrets, security config, crypto, CMDI, privilege escalation). Use in parallel with exposure and dataflow signal agents.
 mode: subagent
 permission:
   read: allow

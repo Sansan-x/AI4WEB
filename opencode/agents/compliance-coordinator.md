@@ -45,6 +45,6 @@ Example task invocation:
 task({ subagent_type: "service-context", prompt: "runId=<id> serviceName=<svc> repoPath=<path> output=.claude/runs/<id>/01-context/<svc>.json ..." })
 ```
 
-When delegating, pass `runId`, `serviceName`, `repoPath`, input paths, and **exact output path** under `.claude/runs/{runId}/`.
+When delegating, pass `runId`, `serviceName`, `repoPath`, `publicBaselinePath`, input paths, and **exact output path** under `.claude/runs/{runId}/`.
 
 Never perform line-by-line code audit; enforce service-level risk profile granularity.
