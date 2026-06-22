@@ -12,7 +12,6 @@ permission:
     risk-synthesizer: allow
     case-mapping: allow
     coverage-gap: allow
-    policy-decision: allow
     evidence-pack: allow
   skill:
     "*": allow
@@ -35,9 +34,17 @@ Follow the `compliance-orchestrator` skill exactly:
    - `service-context` → `baseline-applicability`
    - `exposure-signal`, `dataflow-signal`, `controlplane-signal` (may run in parallel via multiple task calls)
    - `risk-synthesizer`
-3. Run `merge_risk_points.py`, then task: `case-mapping` → `coverage-gap` → `policy-decision` → `evidence-pack`.
-4. Validate each artifact with `validate_artifact.py` before the next phase.
-5. On validation failure, write Block decision with `pipelineDegraded` and stop.
+3. Run `merge_risk_points.py`, then task: `case-mapping` → `coverage-gap`.
+4. Run Phase 8 via Bash (script only — **do not** task `policy-decision`):
+   ```bash
+   python3 compliance/scripts/compute_service_decision.py --run-id {runId} --project-root .
+   ```
+   Validate each `08-decisions/{service}.json` (`service-decision` schema) and `08-decision.json` (`decision` schema) with `validate_artifact.py`.
+5. Task `evidence-pack`.
+6. Validate each artifact with `validate_artifact.py` before the next phase.
+7. On validation failure, write Block decision with `pipelineDegraded` and stop.
+
+When delegating Phase 3–4 workers, include scan budget fields from `compliance-orchestrator` § Delegation prompt template.
 
 Example task invocation:
 
@@ -45,6 +52,6 @@ Example task invocation:
 task({ subagent_type: "service-context", prompt: "runId=<id> serviceName=<svc> repoPath=<path> output=.claude/runs/<id>/01-context/<svc>.json ..." })
 ```
 
-When delegating, pass `runId`, `serviceName`, `repoPath`, input paths, and **exact output path** under `.claude/runs/{runId}/`.
+When delegating, pass `runId`, `serviceName`, `repoPath`, `publicBaselinePath`, input paths, and **exact output path** under `.claude/runs/{runId}/`.
 
 Never perform line-by-line code audit; enforce service-level risk profile granularity.

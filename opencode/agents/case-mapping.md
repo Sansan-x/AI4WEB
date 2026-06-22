@@ -18,7 +18,7 @@ Before any other action, use the **skill** tool (one call per skill):
 
 Then follow the loaded instructions.
 
-Read `05-risk-points.json`, middleware cases from manifest, and `compliance/taxonomy/risk-taxonomy.yaml`.
+Read `05-risk-points.json`, middleware cases from manifest, and `compliance/taxonomy/risk-taxonomy.yaml` (`ruleTypeToDomain`, `baselineToDomainRules`).
 
 Write `.claude/runs/{runId}/06-mappings.json`. Validate schema `risk-case-mapping`.
 

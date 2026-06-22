@@ -20,8 +20,8 @@ Before any other action, use the **skill** tool (one call per skill):
 
 Then follow the loaded instructions.
 
-Read `01-context/{service}.json` and `compliance/taxonomy/baseline-catalog.yaml`.
+Read `manifest.json` for `publicBaselinePath`, `01-context/{service}.json`, and `compliance/taxonomy/baseline-catalog.yaml`.
 
-Write `.claude/runs/{runId}/02-applicability/{service}.json`. Validate with schema `applicability`.
+Write `.claude/runs/{runId}/02-applicability/{service}.json` covering all 14 `categoryCatalog` ruleTypes with `ruleType`, `ruleTypeEn`, and bridged `domain`. Validate with schema `applicability` and `--project-root`.
 
-Excluded baselines must include `reason`. Do not mark CMDI/FILE applicable without surface evidence.
+Excluded ruleTypes must include `reason`. Do not mark CMDI/FILE/PRIV_ESC applicable without surface evidence.
