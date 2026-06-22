@@ -1,0 +1,18 @@
+{
+  "productId": "demo-product",
+  "productRunId": "golden-product-eval",
+  "createdAt": "2026-06-09T12:00:00Z",
+  "serviceRuns": [
+    {
+      "service": "order-service",
+      "runId": "golden-demo-soft",
+      "decisionPath": ".claude/runs/golden-demo-soft/08-decisions/order-service.json"
+    },
+    {
+      "service": "order-service",
+      "runId": "golden-demo-ratio-block",
+      "decisionPath": ".claude/runs/golden-demo-ratio-block/08-decisions/order-service.json"
+    }
+  ],
+  "policyGatePath": "compliance/taxonomy/policy-gate.yaml"
+}

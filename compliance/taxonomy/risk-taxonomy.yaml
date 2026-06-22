@@ -1,5 +1,5 @@
-version: "1.0.0"
-updatedAt: "2026-05-29"
+version: "1.1.0"
+updatedAt: "2026-06-09"
 owner: security-governance
 description: Normalized risk domains and baseline mapping for Java microservice compliance.
 
@@ -12,16 +12,24 @@ severityModel:
     AUTH: P1
     SECRETS: P1
     DEPENDENCY: P2
+    WEB: P1
+    SEC_CONFIG: P2
+    CRYPTO: P1
+    DOS: P2
+    XSS: P2
+    TEMPLATE_INJ: P1
+    XML_INJ: P1
+    CSV_INJ: P2
+    PRIV_ESC: P1
     INFO_DISCLOSURE: P2
     SSRF: P2
-    XSS: P2
 
 riskDomains:
   - code: SQLI
     name: SQL Injection
     baselineRefs:
+      - category-sql-injection
       - sql-injection-baseline
-      - "TOP: data access security"
     keySignals:
       - raw SQL string concatenation
       - mybatis ${} usage
@@ -29,6 +37,7 @@ riskDomains:
   - code: CMDI
     name: Command Injection
     baselineRefs:
+      - category-command-injection
       - command-injection-baseline
     keySignals:
       - Runtime.exec
@@ -37,6 +46,7 @@ riskDomains:
   - code: FILE
     name: File Operation Security
     baselineRefs:
+      - category-file-upload-download
       - file-operation-baseline
     keySignals:
       - path traversal
@@ -45,18 +55,37 @@ riskDomains:
   - code: AUTH
     name: Authentication and Authorization
     baselineRefs:
+      - category-identity-management
       - auth-baseline
     keySignals:
       - missing resource-level authorization
       - IDOR
     defaultCoverageScope: serviceInferred
+  - code: WEB
+    name: Web Security
+    baselineRefs:
+      - category-web-security
+    keySignals:
+      - missing API authentication
+      - CSRF
+      - insecure session handling
+    defaultCoverageScope: serviceInferred
   - code: SECRETS
     name: Sensitive Data Protection
     baselineRefs:
+      - category-secrets-protection
       - secrets-baseline
     keySignals:
       - secrets in logs
       - plaintext key storage
+    defaultCoverageScope: productOnly
+  - code: SEC_CONFIG
+    name: Security Configuration
+    baselineRefs:
+      - category-security-config
+    keySignals:
+      - insecure defaults
+      - missing security headers
     defaultCoverageScope: productOnly
   - code: DEPENDENCY
     name: Dependency Security
@@ -65,6 +94,76 @@ riskDomains:
     keySignals:
       - known vulnerable dependencies
     defaultCoverageScope: productOnly
+  - code: CRYPTO
+    name: Cryptographic Security
+    baselineRefs:
+      - category-crypto-security
+    keySignals:
+      - weak algorithms
+      - hardcoded keys
+    defaultCoverageScope: serviceInferred
+  - code: DOS
+    name: Denial of Service
+    baselineRefs:
+      - category-dos
+    keySignals:
+      - missing rate limits
+      - unbounded queries
+    defaultCoverageScope: serviceInferred
+  - code: XSS
+    name: Cross-Site Scripting
+    baselineRefs:
+      - category-xss-injection
+    keySignals:
+      - unescaped HTML output
+      - reflected user input
+    defaultCoverageScope: serviceVerified
+  - code: TEMPLATE_INJ
+    name: Template Injection
+    baselineRefs:
+      - category-template-injection
+    keySignals:
+      - user input in template expressions
+    defaultCoverageScope: serviceVerified
+  - code: XML_INJ
+    name: XML Injection
+    baselineRefs:
+      - category-xml-injection
+    keySignals:
+      - XXE
+      - unsafe XML parsing
+    defaultCoverageScope: serviceVerified
+  - code: CSV_INJ
+    name: CSV Injection
+    baselineRefs:
+      - category-csv-injection
+    keySignals:
+      - formula injection in CSV export
+    defaultCoverageScope: serviceVerified
+  - code: PRIV_ESC
+    name: Privilege Escalation
+    baselineRefs:
+      - category-sudo-privilege
+    keySignals:
+      - shell invocation
+      - sudo usage
+    defaultCoverageScope: serviceVerified
+
+ruleTypeToDomain:
+  安全配置: SEC_CONFIG
+  命令注入: CMDI
+  模板注入: TEMPLATE_INJ
+  CSV注入: CSV_INJ
+  SQL注入: SQLI
+  XML注入: XML_INJ
+  XSS注入: XSS
+  密码算法安全: CRYPTO
+  敏感信息保护: SECRETS
+  身份管理: AUTH
+  文件上传下载: FILE
+  D-DoS: DOS
+  SUDO提权: PRIV_ESC
+  WEB安全: WEB
 
 baselineToDomainRules:
   - baselineContains: sql
@@ -81,6 +180,10 @@ baselineToDomainRules:
     mapToDomain: AUTH
   - baselineContains: auth
     mapToDomain: AUTH
+  - baselineContains: 身份
+    mapToDomain: AUTH
+  - baselineContains: web
+    mapToDomain: WEB
   - baselineContains: 敏感
     mapToDomain: SECRETS
   - baselineContains: secret
@@ -89,6 +192,26 @@ baselineToDomainRules:
     mapToDomain: DEPENDENCY
   - baselineContains: dependency
     mapToDomain: DEPENDENCY
+  - baselineContains: xss
+    mapToDomain: XSS
+  - baselineContains: 模板
+    mapToDomain: TEMPLATE_INJ
+  - baselineContains: template
+    mapToDomain: TEMPLATE_INJ
+  - baselineContains: xml
+    mapToDomain: XML_INJ
+  - baselineContains: csv
+    mapToDomain: CSV_INJ
+  - baselineContains: 密码
+    mapToDomain: CRYPTO
+  - baselineContains: crypto
+    mapToDomain: CRYPTO
+  - baselineContains: dos
+    mapToDomain: DOS
+  - baselineContains: sudo
+    mapToDomain: PRIV_ESC
+  - baselineContains: 配置
+    mapToDomain: SEC_CONFIG
 
 coverageScopes:
   - code: productOnly

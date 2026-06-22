@@ -18,6 +18,9 @@ SCHEMA_MAP = {
     "risk-case-mapping": "risk-case-mapping.schema.json",
     "gaps": "gaps.schema.json",
     "decision": "decision.schema.json",
+    "service-decision": "service-decision.schema.json",
+    "product-manifest": "product-manifest.schema.json",
+    "product-decision": "product-decision.schema.json",
     "service-slices": "service-slices.schema.json",
     "evidence-package": "evidence-package.schema.json",
     "public-baseline": "public-baseline.schema.json",
@@ -119,6 +122,39 @@ def validate(value: Any, schema: Dict[str, Any], path: str = "$", root: Optional
     return errors
 
 
+def load_category_catalog_rule_types(project_root: Path) -> Set[str]:
+    template_path = project_root / "compliance" / "examples" / "public_baseline.template.json"
+    if not template_path.is_file():
+        return set()
+    template = json.loads(template_path.read_text(encoding="utf-8"))
+    return {item["ruleType"] for item in template.get("categoryCatalog", []) if "ruleType" in item}
+
+
+def validate_applicability_completeness(data: Any, project_root: Path) -> List[str]:
+    errors: List[str] = []
+    expected = load_category_catalog_rule_types(project_root)
+    if not expected:
+        return errors
+
+    seen: Set[str] = set()
+    for section, key in (("applicableBaselines", "applicable"), ("excludedBaselines", None)):
+        for i, item in enumerate(data.get(section, [])):
+            rule_type = item.get("ruleType")
+            if not rule_type:
+                continue
+            if rule_type in seen:
+                errors.append(f"$.{section}[{i}]: duplicate ruleType {rule_type!r}")
+            seen.add(rule_type)
+
+    missing = expected - seen
+    extra = seen - expected
+    if missing:
+        errors.append(f"$.applicability: missing ruleTypes from categoryCatalog: {sorted(missing)}")
+    if extra:
+        errors.append(f"$.applicability: unknown ruleTypes not in categoryCatalog: {sorted(extra)}")
+    return errors
+
+
 def validate_risk_point_list(data: Any, schema_dir: Path) -> List[str]:
     rp_schema = load_schema(schema_dir, "risk-point.schema.json")
     if not isinstance(data, list):
@@ -134,9 +170,15 @@ def main() -> int:
     parser.add_argument("--schema", required=True, help="Schema key or filename")
     parser.add_argument("--file", required=True)
     parser.add_argument("--schema-dir", default="compliance/schemas")
+    parser.add_argument(
+        "--project-root",
+        default=".",
+        help="Project root for applicability categoryCatalog completeness checks",
+    )
     args = parser.parse_args()
 
     schema_dir = Path(args.schema_dir)
+    project_root = Path(args.project_root).resolve()
     data = json.loads(Path(args.file).read_text(encoding="utf-8"))
 
     if args.schema in ("risk-point-list", "risk-points"):
@@ -150,6 +192,9 @@ def main() -> int:
                 errors.extend(validate(item, item_schema, f"$[{i}]"))
         else:
             errors = validate(data, schema, root=schema)
+
+    if args.schema == "applicability" and not errors:
+        errors.extend(validate_applicability_completeness(data, project_root))
 
     if errors:
         print(json.dumps({"valid": False, "errors": errors}, indent=2))

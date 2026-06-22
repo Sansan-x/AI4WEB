@@ -1,0 +1,56 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "service-decision.schema.json",
+  "title": "ServiceComplianceDecision",
+  "type": "object",
+  "required": ["service", "runId", "decision", "reasons", "policyVersion", "coverageScore"],
+  "additionalProperties": false,
+  "properties": {
+    "service": { "type": "string" },
+    "runId": { "type": "string" },
+    "decision": {
+      "type": "string",
+      "enum": ["Pass", "ConditionalPass", "Block"]
+    },
+    "reasons": {
+      "type": "array",
+      "items": { "type": "string" }
+    },
+    "policyVersion": { "type": "string" },
+    "policyMode": { "type": "string" },
+    "coverageScore": {
+      "type": "object",
+      "required": [
+        "mandatoryTotal",
+        "mandatoryMatched",
+        "mandatoryGaps",
+        "ratioEligibleTotal",
+        "ratioEligibleMatched",
+        "ratioEligibleCoverageRate",
+        "weightedScore"
+      ],
+      "properties": {
+        "mandatoryTotal": { "type": "integer" },
+        "mandatoryMatched": { "type": "integer" },
+        "mandatoryGaps": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": ["riskId", "category", "severity"],
+            "properties": {
+              "riskId": { "type": "string" },
+              "category": { "type": "string" },
+              "severity": { "type": "string" },
+              "gapType": { "type": "string" }
+            }
+          }
+        },
+        "ratioEligibleTotal": { "type": "integer" },
+        "ratioEligibleMatched": { "type": "integer" },
+        "ratioEligibleCoverageRate": { "type": "number" },
+        "weightedScore": { "type": "number" }
+      }
+    },
+    "readyForSubmission": { "type": "boolean" }
+  }
+}
