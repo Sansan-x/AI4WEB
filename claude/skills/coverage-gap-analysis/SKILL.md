@@ -33,7 +33,7 @@ description: Identifies coverage gaps between risk points, middleware mappings, 
 - Do not emit `NoCaseMatched` for an applicable open risk if any same-domain case exists (`targetService` service or `*`).
 - If a wildcard-matched case is FAIL/ERROR/SKIP, emit `CaseFailed` or `CaseNotEffective` for audit but do not treat as Block trigger in lenient phase.
 
-Do not report gaps for excluded baselines (CMDI when service has no command surface).
+Do not report gaps for excluded ruleTypes/domains (e.g. CMDI when service has no command surface).
 
 ## Lenient vs strict
 

@@ -31,9 +31,11 @@ Defaults if omitted:
    - `service-context` → `baseline-applicability`
    - `exposure-signal`, `dataflow-signal`, `controlplane-signal` (parallel)
    - `risk-synthesizer`
-4. Run `merge_risk_points.py` → spawn `case-mapping` → `coverage-gap` → `policy-decision` → `evidence-pack`.
-5. Validate artifacts after each phase with `validate_artifact.py`.
-6. Report final `08-decision.json` and `09-evidence/index.json` paths.
+4. Run `merge_risk_points.py` → spawn `case-mapping` → `coverage-gap`.
+5. Run `compute_service_decision.py` (coordinator Bash, not Agent) → validate `08-decisions/*` + `08-decision.json`.
+6. Spawn `evidence-pack`.
+7. Validate artifacts after each phase with `validate_artifact.py`.
+8. Report final `08-decision.json` and `09-evidence/index.json` paths.
 
 If you are not already running as coordinator, delegate the entire flow to the `compliance-coordinator` agent with the parameters above.
 

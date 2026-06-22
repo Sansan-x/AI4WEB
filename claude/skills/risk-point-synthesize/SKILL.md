@@ -19,13 +19,14 @@ description: Synthesizes ServiceRiskProfile and RiskPoint list from threat signa
 ## Rules
 
 1. Merge signals with `strength` in `confirmed`, `likely` per domain into **one RiskPoint per domain**.
-2. Skip domains in `excludedBaselines` or `not_applicable` signals.
+2. Skip domains in `excludedBaselines` (match by `domain` or `ruleType`) or `not_applicable` signals.
 3. Set `severity` from taxonomy defaults (SQLI/CMDI/FILE/AUTH → P1 unless justified).
 4. `riskPointIds` must match embedded `riskPoints[].riskId`.
 5. `overallExposure`: low | medium | high | critical based on highest open severity.
 6. `readyForSubmission`:
-   - If `08-decision.json` exists: `true` when `decision` is `Pass` or `ConditionalPass`; `false` when `Block`.
-   - If decision not yet available (profile written before policy gate): default `false` until policy-decision updates or evidence-pack reflects final decision.
+   - Prefer `08-decisions/{service}.json`: `true` when `decision` is `Pass` or `ConditionalPass`.
+   - Fallback to run-level `08-decision.json` if per-service file absent.
+   - If decision not yet available (profile written before policy gate): default `false`.
 
 ## RiskPoint shape
 
@@ -42,3 +43,12 @@ description: Synthesizes ServiceRiskProfile and RiskPoint list from threat signa
 ```
 
 Max 3 `codeEvidence` entries.
+
+## Scan budget
+
+Follow `compliance-orchestrator` § Scan budget (Phase 4). Summary:
+
+- **Do not** `Grep` or `Read` the target Java repository
+- Inputs: `02-applicability` + `03-signals/{service}/*.json` + taxonomy severities only
+- One RiskPoint per domain from `confirmed`/`likely` signals; copy `codeEvidence` from signal `anchors` (max 3)
+- Set `readyForSubmission: false` (Phase 8 script updates it)

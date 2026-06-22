@@ -26,6 +26,8 @@ schema_for() {
 
   case "$base" in
     manifest.json) echo "" ;;
+    product-manifest.json) echo "product-manifest" ;;
+    product-decision.json) echo "product-decision" ;;
     00-service-slices.json) echo "service-slices" ;;
     06-mappings.json) echo "risk-case-mapping" ;;
     05-risk-points.json) echo "risk-points" ;;
@@ -37,6 +39,7 @@ schema_for() {
       if [[ "$dir" == *"/01-context" ]]; then echo "service-context"; fi
       if [[ "$dir" == *"/02-applicability" ]]; then echo "applicability"; fi
       if [[ "$dir" == *"/04-profiles" ]]; then echo "service-risk-profile"; fi
+      if [[ "$dir" == *"/08-decisions" ]]; then echo "service-decision"; fi
       ;;
   esac
 }

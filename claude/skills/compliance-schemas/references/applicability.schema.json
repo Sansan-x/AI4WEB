@@ -11,9 +11,11 @@
       "type": "array",
       "items": {
         "type": "object",
-        "required": ["baselineId", "domain", "coverageScope", "applicable"],
+        "required": ["baselineId", "ruleType", "domain", "coverageScope", "applicable"],
         "properties": {
           "baselineId": { "type": "string" },
+          "ruleType": { "type": "string" },
+          "ruleTypeEn": { "type": "string" },
           "domain": { "type": "string" },
           "coverageScope": {
             "type": "string",
@@ -28,9 +30,11 @@
       "type": "array",
       "items": {
         "type": "object",
-        "required": ["baselineId", "reason"],
+        "required": ["baselineId", "ruleType", "reason"],
         "properties": {
           "baselineId": { "type": "string" },
+          "ruleType": { "type": "string" },
+          "ruleTypeEn": { "type": "string" },
           "domain": { "type": "string" },
           "reason": { "type": "string" }
         }

@@ -1,0 +1,27 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "product-manifest.schema.json",
+  "title": "ProductEvaluationManifest",
+  "type": "object",
+  "required": ["productId", "productRunId", "serviceRuns"],
+  "additionalProperties": false,
+  "properties": {
+    "productId": { "type": "string" },
+    "productRunId": { "type": "string" },
+    "createdAt": { "type": "string" },
+    "policyGatePath": { "type": "string" },
+    "serviceRuns": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "required": ["service", "runId", "decisionPath"],
+        "properties": {
+          "service": { "type": "string" },
+          "runId": { "type": "string" },
+          "decisionPath": { "type": "string" }
+        }
+      }
+    }
+  }
+}

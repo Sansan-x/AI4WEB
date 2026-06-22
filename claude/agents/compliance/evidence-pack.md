@@ -1,6 +1,6 @@
 ---
 name: evidence-pack
-description: Assembles audit evidence package with agentRunTrace for compliance submission. Use after policy-decision completes.
+description: Assembles audit evidence package with agentRunTrace for compliance submission. Use after Phase 8 (`compute_service_decision.py`) completes.
 tools: Read, Write, Bash
 skills: evidence-pack-generate, compliance-schemas
 model: sonnet
